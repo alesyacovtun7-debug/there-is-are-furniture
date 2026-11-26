@@ -1,14 +1,14 @@
 export const houses = [
-{id:'classic',name:'Sunny Cottage',image:'01-классический-дом.png',features:['double-bed','yellow-armchair','bookshelves','sofa','kitchen']},
-{id:'family',name:'Family Nest',image:'02-две-детские-кровати.png',features:['double-bed','two-single-beds','children-beds','two-bedrooms','yellow-armchair','bookshelves','sofa','kitchen']},
-{id:'office',name:'Workday House',image:'03-отдельный-кабинет.png',features:['double-bed','office','bookshelves','yellow-armchair','sofa','kitchen']},
-{id:'greenhouse',name:'Garden House',image:'04-сад-и-теплица.png',features:['double-bed','greenhouse','garden','bookshelves','sofa','kitchen']},
-{id:'bunk',name:'Seaside Family',image:'05-двухъярусная-кровать.png',features:['double-bed','bunk-bed','children-beds','two-bedrooms','bookshelves','sofa','kitchen']},
-{id:'art',name:'Artist Cottage',image:'06-мастерская-художника.png',features:['double-bed','easel','paintbrushes','bookshelves','sofa','kitchen']},
-{id:'library',name:'Book Nook',image:'07-библиотека.png',features:['double-bed','library','bookshelves','sofa','kitchen']},
-{id:'nursery',name:'Little Steps',image:'08-детская-для-малыша.png',features:['double-bed','crib','two-bedrooms','bookshelves','yellow-armchair','sofa','kitchen']},
-{id:'music',name:'Music House',image:'09-музыкальная-комната.png',features:['double-bed','piano','records','bookshelves','sofa','kitchen']},
-{id:'patio',name:'Patio Garden',image:'10-терраса-и-сад.png',features:['double-bed','patio','garden','lounge-chairs','yellow-armchair','bookshelves','sofa','kitchen']}
+{id:'classic',name:'Sunny Cottage',image:'home-01.jpg',features:['double-bed','yellow-armchair','bookshelves','sofa','kitchen']},
+{id:'family',name:'Family Nest',image:'home-02.jpg',features:['double-bed','two-single-beds','children-beds','two-bedrooms','yellow-armchair','bookshelves','sofa','kitchen']},
+{id:'office',name:'Workday House',image:'home-03.jpg',features:['double-bed','office','bookshelves','yellow-armchair','sofa','kitchen']},
+{id:'greenhouse',name:'Garden House',image:'home-04.jpg',features:['double-bed','greenhouse','garden','bookshelves','sofa','kitchen']},
+{id:'bunk',name:'Seaside Family',image:'home-05.jpg',features:['double-bed','bunk-bed','children-beds','two-bedrooms','bookshelves','sofa','kitchen']},
+{id:'art',name:'Artist Cottage',image:'home-06.jpg',features:['double-bed','easel','paintbrushes','bookshelves','sofa','kitchen']},
+{id:'library',name:'Book Nook',image:'home-07.jpg',features:['double-bed','library','bookshelves','sofa','kitchen']},
+{id:'nursery',name:'Little Steps',image:'home-08.jpg',features:['double-bed','crib','two-bedrooms','bookshelves','yellow-armchair','sofa','kitchen']},
+{id:'music',name:'Music House',image:'home-09.jpg',features:['double-bed','piano','records','bookshelves','sofa','kitchen']},
+{id:'patio',name:'Patio Garden',image:'home-10.jpg',features:['double-bed','patio','garden','lounge-chairs','yellow-armchair','bookshelves','sofa','kitchen']}
 ];
 const fact=(text,feature,model,negative)=>({text,feature,model,negative});
 const married=()=>fact("I'm 30 and I'm married. We need a double bed.",'double-bed','There is a double bed.',"There isn't a double bed here. Let's keep looking.");
@@ -29,16 +29,16 @@ export const rounds=[
 ];
 
 const clients=[
- {name:'Alex',portrait:'buyer.png'},
- {name:'Olivia',portrait:'olivia.png'},
- {name:'Daniel',portrait:'daniel.png'},
- {name:'Mia',portrait:'mia.png'},
- {name:'Sofia',portrait:'sofia.png'},
- {name:'Noah',portrait:'noah.png'},
- {name:'Emma',portrait:'emma.png'},
- {name:'Liam',portrait:'liam.png'},
- {name:'Grace',portrait:'grace.png'},
- {name:'Jack',portrait:'jack.png'}
+ {name:'Alex',portrait:'buyer.jpg'},
+ {name:'Olivia',portrait:'olivia.jpg'},
+ {name:'Daniel',portrait:'daniel.jpg'},
+ {name:'Mia',portrait:'mia.jpg'},
+ {name:'Sofia',portrait:'sofia.jpg'},
+ {name:'Noah',portrait:'noah.jpg'},
+ {name:'Emma',portrait:'emma.jpg'},
+ {name:'Liam',portrait:'liam.jpg'},
+ {name:'Grace',portrait:'grace.jpg'},
+ {name:'Jack',portrait:'jack.jpg'}
 ];
 rounds.forEach((round,index)=>{round.client=clients[index];});
 rounds[9].facts[1].models={nursery:'There is a rocking chair with yellow cushions in the nursery.'};

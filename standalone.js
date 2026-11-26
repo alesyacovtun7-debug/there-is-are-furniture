@@ -2,16 +2,16 @@
 (function () {
 'use strict';
 const houses = [
-{id:'classic',name:'Sunny Cottage',image:'01-классический-дом.png',features:['double-bed','yellow-armchair','bookshelves','sofa','kitchen']},
-{id:'family',name:'Family Nest',image:'02-две-детские-кровати.png',features:['double-bed','two-single-beds','children-beds','two-bedrooms','yellow-armchair','bookshelves','sofa','kitchen']},
-{id:'office',name:'Workday House',image:'03-отдельный-кабинет.png',features:['double-bed','office','bookshelves','yellow-armchair','sofa','kitchen']},
-{id:'greenhouse',name:'Garden House',image:'04-сад-и-теплица.png',features:['double-bed','greenhouse','garden','bookshelves','sofa','kitchen']},
-{id:'bunk',name:'Seaside Family',image:'05-двухъярусная-кровать.png',features:['double-bed','bunk-bed','children-beds','two-bedrooms','bookshelves','sofa','kitchen']},
-{id:'art',name:'Artist Cottage',image:'06-мастерская-художника.png',features:['double-bed','easel','paintbrushes','bookshelves','sofa','kitchen']},
-{id:'library',name:'Book Nook',image:'07-библиотека.png',features:['double-bed','library','bookshelves','sofa','kitchen']},
-{id:'nursery',name:'Little Steps',image:'08-детская-для-малыша.png',features:['double-bed','crib','two-bedrooms','bookshelves','yellow-armchair','sofa','kitchen']},
-{id:'music',name:'Music House',image:'09-музыкальная-комната.png',features:['double-bed','piano','records','bookshelves','sofa','kitchen']},
-{id:'patio',name:'Patio Garden',image:'10-терраса-и-сад.png',features:['double-bed','patio','garden','lounge-chairs','yellow-armchair','bookshelves','sofa','kitchen']}
+{id:'classic',name:'Sunny Cottage',image:'home-01.jpg',features:['double-bed','yellow-armchair','bookshelves','sofa','kitchen']},
+{id:'family',name:'Family Nest',image:'home-02.jpg',features:['double-bed','two-single-beds','children-beds','two-bedrooms','yellow-armchair','bookshelves','sofa','kitchen']},
+{id:'office',name:'Workday House',image:'home-03.jpg',features:['double-bed','office','bookshelves','yellow-armchair','sofa','kitchen']},
+{id:'greenhouse',name:'Garden House',image:'home-04.jpg',features:['double-bed','greenhouse','garden','bookshelves','sofa','kitchen']},
+{id:'bunk',name:'Seaside Family',image:'home-05.jpg',features:['double-bed','bunk-bed','children-beds','two-bedrooms','bookshelves','sofa','kitchen']},
+{id:'art',name:'Artist Cottage',image:'home-06.jpg',features:['double-bed','easel','paintbrushes','bookshelves','sofa','kitchen']},
+{id:'library',name:'Book Nook',image:'home-07.jpg',features:['double-bed','library','bookshelves','sofa','kitchen']},
+{id:'nursery',name:'Little Steps',image:'home-08.jpg',features:['double-bed','crib','two-bedrooms','bookshelves','yellow-armchair','sofa','kitchen']},
+{id:'music',name:'Music House',image:'home-09.jpg',features:['double-bed','piano','records','bookshelves','sofa','kitchen']},
+{id:'patio',name:'Patio Garden',image:'home-10.jpg',features:['double-bed','patio','garden','lounge-chairs','yellow-armchair','bookshelves','sofa','kitchen']}
 ];
 const fact=(text,feature,model,negative)=>({text,feature,model,negative});
 const married=()=>fact("I'm 30 and I'm married. We need a double bed.",'double-bed','There is a double bed.',"There isn't a double bed here. Let's keep looking.");
@@ -32,16 +32,16 @@ const rounds=[
 ];
 
 const clients=[
- {name:'Alex',portrait:'buyer.png'},
- {name:'Olivia',portrait:'olivia.png'},
- {name:'Daniel',portrait:'daniel.png'},
- {name:'Mia',portrait:'mia.png'},
- {name:'Sofia',portrait:'sofia.png'},
- {name:'Noah',portrait:'noah.png'},
- {name:'Emma',portrait:'emma.png'},
- {name:'Liam',portrait:'liam.png'},
- {name:'Grace',portrait:'grace.png'},
- {name:'Jack',portrait:'jack.png'}
+ {name:'Alex',portrait:'buyer.jpg'},
+ {name:'Olivia',portrait:'olivia.jpg'},
+ {name:'Daniel',portrait:'daniel.jpg'},
+ {name:'Mia',portrait:'mia.jpg'},
+ {name:'Sofia',portrait:'sofia.jpg'},
+ {name:'Noah',portrait:'noah.jpg'},
+ {name:'Emma',portrait:'emma.jpg'},
+ {name:'Liam',portrait:'liam.jpg'},
+ {name:'Grace',portrait:'grace.jpg'},
+ {name:'Jack',portrait:'jack.jpg'}
 ];
 rounds.forEach((round,index)=>{round.client=clients[index];});
 rounds[9].facts[1].models={nursery:'There is a rocking chair with yellow cushions in the nursery.'};
@@ -76,6 +76,32 @@ function advance(state,rounds) {
 const $=id=>document.getElementById(id);
 let state=createGame(rounds,houses);
 let soundEnabled=true;
+let houseReady=false;
+let displayedHouse='';
+const prefetchedHouses=new Set();
+function showHouse(house,index,force=false){
+ const src='./assets/'+encodeURIComponent(house.image);
+ if(displayedHouse===src&&!force)return;
+ displayedHouse=src;houseReady=false;
+ const img=$('house-image'),status=$('house-load-status');
+ img.style.visibility='hidden';status.hidden=false;status.textContent='Loading home '+(index+1)+'…';
+ $('retry-house').hidden=true;$('check-button').disabled=true;$('zoom-button').disabled=true;
+ img.onload=()=>{
+  if(!img.complete||!img.naturalWidth)return;
+  houseReady=true;img.style.visibility='visible';status.hidden=true;
+  $('retry-house').hidden=true;$('check-button').disabled=false;$('zoom-button').disabled=false;
+  // Warm only neighbouring houses, after the selected image is visible.
+  for(const offset of [-1,1]){
+   const neighbour=houses[(index+offset+houses.length)%houses.length];
+   if(prefetchedHouses.has(neighbour.image))continue;
+   prefetchedHouses.add(neighbour.image);
+   const next=new Image();next.src='./assets/'+encodeURIComponent(neighbour.image);
+  }
+ };
+ img.onerror=()=>{houseReady=false;img.style.visibility='hidden';status.hidden=false;status.textContent='This home could not load. Please try again.';$('retry-house').hidden=false;$('check-button').disabled=true;$('zoom-button').disabled=true;};
+ img.src=src;
+ if(img.complete&&img.naturalWidth)img.onload();
+}
 function speak(text){if(!soundEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.88;const voice=window.speechSynthesis.getVoices().find(v=>v.lang.startsWith('en'));if(voice)u.voice=voice;window.speechSynthesis.speak(u);}
 function render(){
  const finished=state.phase==='finished';$('game').hidden=finished;$('results-screen').hidden=!finished;
@@ -92,7 +118,7 @@ function render(){
  $('story-title').textContent=round.title;
  $('clues').replaceChildren();
  round.facts.forEach((f,i)=>{const item=document.createElement('div');item.className='clue '+(i>state.factIndex?'locked':i===state.factIndex?'current':'revealed');const label=document.createElement('span');label.textContent='FACT '+(i+1);const text=document.createElement('p');text.textContent=i>state.factIndex?'A little surprise… Find a home to unlock it.':f.text;item.append(label,text);$('clues').append(item);});
- $('house-image').src='./assets/'+encodeURIComponent(house.image);$('house-image').alt='Home '+(state.selectedHouseIndex+1)+' — a cutaway showing all rooms';
+ showHouse(house,state.selectedHouseIndex);$('house-image').alt='Home '+(state.selectedHouseIndex+1)+' — a cutaway showing all rooms';
  $('house-counter').textContent='HOME '+String(state.selectedHouseIndex+1).padStart(2,'0')+' / 10';
  $('house-picks').innerHTML=houses.map((h,i)=>'<button class="house-pick '+(i===state.selectedHouseIndex?'active':'')+'" data-index="'+i+'" aria-label="Home '+(i+1)+'" aria-pressed="'+(i===state.selectedHouseIndex)+'" '+(state.phase!=='search'?'disabled':'')+'>'+String(i+1).padStart(2,'0')+'</button>').join('');
  $('request').textContent=state.phase==='matched'?'This is the one! Thank you for finding my new home.':fact.text;
@@ -108,7 +134,8 @@ function choose(index){state=selectHouse(state,index,houses);window.speechSynthe
 $('previous-house').onclick=()=>choose(state.selectedHouseIndex-1);
 $('next-house').onclick=()=>choose(state.selectedHouseIndex+1);
 $('house-picks').onclick=e=>{const b=e.target.closest('[data-index]');if(b)choose(Number(b.dataset.index));};
-$('check-button').onclick=()=>{state=checkHome(state,rounds,houses);render();speak(state.feedback);};
+$('check-button').onclick=()=>{if(!houseReady)return;state=checkHome(state,rounds,houses);render();speak(state.feedback);};
+$('retry-house').onclick=()=>showHouse(houses[state.selectedHouseIndex],state.selectedHouseIndex,true);
 $('continue-button').onclick=()=>{state=advance(state,rounds);window.speechSynthesis?.cancel();render();};
 $('example-button').onclick=()=>{const fact=rounds[state.roundIndex].facts[state.factIndex];const house=houses[state.selectedHouseIndex];const has=house.features.includes(fact.feature);$('example').textContent=has?(fact.models?.[house.id]||fact.model):fact.negative.split('. ')[0]+'.';$('example').hidden=!$('example').hidden;};
 $('listen-button').onclick=()=>speak($('request').textContent);
