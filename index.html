@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Find My Home · GURU</title><link rel="stylesheet" href="./styles.css"></head>
+<body><div class="app">
+<header><a class="brand" href="./">GURU<span>play & speak</span></a><span class="lesson-tag">THERE IS / THERE ARE</span><button id="sound-toggle" class="button small secondary" aria-pressed="true">Sound on</button></header>
+<main id="game">
+<div class="heading"><div><p class="eyebrow">THE HOUSE HUNT</p><h1>Find a place to call <span>home.</span></h1></div><div class="progress-wrap"><strong id="round-label"></strong><div class="progress"><span id="progress-fill"></span></div></div></div>
+<div class="story-line"><span id="story-title"></span><span>Listen. Look. Say it aloud.</span></div>
+<div id="clues" class="clues" aria-label="Client facts"></div>
+<section class="house-scene" aria-label="House catalogue"><button id="previous-house" class="button nav secondary" aria-label="Previous house">Previous</button><div class="house-frame"><img id="house-image" alt=""><div class="house-caption"><span id="house-counter"></span><button id="zoom-button" class="text-button">View larger</button></div></div><button id="next-house" class="button nav secondary" aria-label="Next house">Next</button></section>
+<div id="house-picks" class="house-picks" aria-label="Choose a house"></div>
+<section class="conversation" aria-label="Speaking activity">
+<div class="character buyer"><img id="client-portrait" src="./assets/buyer.png" alt="Your client"><div class="bubble"><small id="client-label"></small><p id="request"></p><button id="listen-button" class="text-button">Listen to your client</button></div></div>
+<div class="speaking"><span class="step-tag">YOUR TURN TO SPEAK</span><h3 id="speaking-title">Tell your client about this home.</h3><p>Say a sentence with <strong>There is</strong> or <strong>There are</strong>. Then check if the home fits.</p><button id="example-button" class="text-button">Need a speaking example?</button><p id="example" class="example" hidden></p><button id="check-button" class="button primary">Check this home</button><button id="continue-button" class="button primary" hidden>Reveal the next fact</button><p class="oral-note">Speak aloud. No typing or recording needed.</p></div>
+<div class="character agent"><img src="./assets/realtor.png" alt="Nora, the estate agent"><div class="bubble"><small>NORA · ESTATE AGENT</small><p id="agent-response" role="status"></p><button id="agent-listen" class="text-button">Listen to Nora</button></div></div>
+</section></main>
+<section id="results-screen" class="results" hidden><p class="eyebrow">HAPPY CLIENTS, HAPPY HOMES</p><h1>You're a home-finding star!</h1><p id="final-score"></p><p>You described rooms, discovered new clues and found the perfect homes.</p><button id="restart-button" class="button primary">Play again</button></section>
+<footer><span>GURU · Learn through play</span><span>Speaking practice · A1–A2</span></footer>
+</div><dialog id="image-dialog"><button id="close-zoom" class="button secondary">Close</button><img id="large-image" alt="House in detail"></dialog><script defer src="./standalone.js"></script></body></html>
+
